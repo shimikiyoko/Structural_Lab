@@ -24,7 +24,7 @@ receptor_file = config['receptor']
 result_dir = config['dir']
 
 # Get the ligand files
-ligand_dir = '/home/sherlock/JRF/unidock/trial'
+ligand_dir = '/content/dock/Uni-Dock/input_ligand'
 ligand_files = glob.glob(os.path.join(ligand_dir, '*.pdbqt'))
 
 # Start timing
@@ -46,7 +46,7 @@ for ligand_file in ligand_files:
         'unidock',
         '--receptor', receptor_file,
         '--gpu_batch', ligand_file,
-        '--search_mode', config["search_mode"],
+        '--search_mode', config["search_mode"]["name"],  # Fix: Extract the "name" field
         '--scoring', config["scoring"],
         '--center_x', str(config["center_x"]),
         '--center_y', str(config["center_y"]),
@@ -74,6 +74,7 @@ for ligand_file in ligand_files:
         logger.error(f'Unexpected error in file {ligand_file}: {str(e)}')
         logger.info(f'Skipping ligand: {ligand_name}')
         skipped_ligands.append(ligand_file)
+
 
 # End timing
 end_time = time.time()
